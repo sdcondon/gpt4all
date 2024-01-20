@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "sample - mistral": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\simon\\Downloads\\mistral-7b-openorca.Q4_0.gguf\""
+    }
+  }
+}

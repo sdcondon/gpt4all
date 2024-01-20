@@ -1,22 +1,34 @@
 ﻿using Gpt4All;
 
-var modelFactory = new Gpt4AllModelFactory();
-if (args.Length < 2)
+if (args.Length < 1)
 {
-    Console.WriteLine($"Usage: Gpt4All.Samples <model-path> <prompt>");
+    Console.WriteLine("Usage: Gpt4All.Samples <model-path>");
     return;
 }
 
 var modelPath = args[0];
-var prompt = args[1];
 
-using var model = modelFactory.LoadModel(modelPath);
+var modelFactory = new Gpt4AllModelFactory(bypassLoading: false);
+Console.WriteLine("Loading model..");
+using var model = await modelFactory.LoadModelAsync(modelPath, PredictRequestOptions.Defaults);
+Console.WriteLine("Model loaded. Submit an empty line to exit.");
 
-var result = await model.GetStreamingPredictionAsync(
-    prompt,
-    PredictRequestOptions.Defaults);
-
-await foreach (var token in result.GetPredictionStreamingAsync())
+var shouldExit = false;
+while (!shouldExit)
 {
-    Console.Write(token);
+    Console.Write("> ");
+    var prompt = Console.ReadLine();
+    shouldExit = prompt?.Length == 0;
+
+    if (!shouldExit)
+    {
+        var result = await model.GetStreamingPredictionAsync(prompt!);
+        await foreach (var token in result.GetPredictionStreamingAsync())
+        {
+            Console.Write(token);
+        }
+
+        Console.WriteLine();
+        Console.WriteLine();
+    }
 }

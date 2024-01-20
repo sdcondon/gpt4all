@@ -1,20 +1,22 @@
-namespace Gpt4All.LibraryLoader;
+﻿namespace Gpt4All.LibraryLoader;
 
 public class LoadResult
 {
-    private LoadResult(bool isSuccess, string? errorMessage)
+    private LoadResult() { }
+
+    public static LoadResult Success(string? filePath) => new()
     {
-        IsSuccess = isSuccess;
-        ErrorMessage = errorMessage;
-    }
+        IsSuccess = true,
+        FilePath = filePath
+    };
 
-    public static LoadResult Success { get; } = new(true, null);
-
-    public static LoadResult Failure(string errorMessage)
+    public static LoadResult Failure(string errorMessage) => new()
     {
-        return new(false, errorMessage);
-    }
+        IsSuccess = false,
+        ErrorMessage = errorMessage
+    };
 
-    public bool IsSuccess { get; }
-    public string? ErrorMessage { get; }
+    public bool IsSuccess { get; init; }
+    public string? ErrorMessage { get; init; }
+    public string? FilePath { get; init; }
 }

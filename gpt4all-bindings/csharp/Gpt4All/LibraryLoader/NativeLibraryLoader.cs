@@ -17,14 +17,8 @@ public static class NativeLibraryLoader
         defaultLibraryLoader = libraryLoader;
     }
 
-    internal static LoadResult LoadNativeLibrary(string? path = default, bool bypassLoading = true)
+    internal static LoadResult LoadNativeLibrary(string? path = default)
     {
-        // If the user has handled loading the library themselves, we don't need to do anything.
-        if (bypassLoading)
-        {
-            return LoadResult.Success;
-        }
-
         var architecture = RuntimeInformation.OSArchitecture switch
         {
             Architecture.X64 => "x64",
@@ -47,15 +41,17 @@ public static class NativeLibraryLoader
         // If the user hasn't set the path, we'll try to find it ourselves.
         if (string.IsNullOrEmpty(path))
         {
-            var libraryName = "libllmodel";
+            const string libraryName = "libllmodel";
             var assemblySearchPath = new[]
             {
                 AppDomain.CurrentDomain.RelativeSearchPath,
                 Path.GetDirectoryName(typeof(NativeLibraryLoader).Assembly.Location),
                 Path.GetDirectoryName(Environment.GetCommandLineArgs()[0])
             }.FirstOrDefault(it => !string.IsNullOrEmpty(it));
+
             // Search for the library dll within the assembly search path. If it doesn't exist, for whatever reason, use the default path.
-            path = Directory.EnumerateFiles(assemblySearchPath ?? string.Empty, $"{libraryName}.{extension}", SearchOption.AllDirectories).FirstOrDefault() ?? Path.Combine("runtimes", $"{platform}-{architecture}", $"{libraryName}.{extension}");
+            path = Directory.EnumerateFiles(assemblySearchPath ?? string.Empty, $"{libraryName}.{extension}", SearchOption.AllDirectories).FirstOrDefault();
+            path ??= Path.Combine("runtimes", $"{platform}-{architecture}", $"{libraryName}.{extension}");
         }
 
         if (defaultLibraryLoader != null)
@@ -65,8 +61,9 @@ public static class NativeLibraryLoader
 
         if (!File.Exists(path))
         {
-            throw new FileNotFoundException($"Native Library not found in path {path}. " +
-                                            $"Verify you have have included the native Gpt4All library in your application.");
+            throw new FileNotFoundException(
+                $"Native Library not found in path {path}. " +
+                $"Verify you have have included the native Gpt4All library in your application.");
         }
 
         ILibraryLoader libraryLoader = platform switch
@@ -76,6 +73,7 @@ public static class NativeLibraryLoader
             "linux" => new LinuxLibraryLoader(),
             _ => throw new PlatformNotSupportedException($"Currently {platform} platform is not supported")
         };
+
         return libraryLoader.OpenLibrary(path);
     }
 }

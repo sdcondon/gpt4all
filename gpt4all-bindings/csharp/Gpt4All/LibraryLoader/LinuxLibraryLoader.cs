@@ -1,4 +1,4 @@
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace Gpt4All.LibraryLoader;
 
@@ -48,6 +48,6 @@ internal class LinuxLibraryLoader : ILibraryLoader
             return LoadResult.Failure(errorMessage);
         }
 
-        return LoadResult.Success;
+        return LoadResult.Success(fileName);
     }
 }

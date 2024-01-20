@@ -2,5 +2,5 @@
 
 public interface IGpt4AllModelFactory
 {
-    IGpt4AllModel LoadModel(string modelPath);
+    Task<IGpt4AllModel> LoadModelAsync(string modelPath, PredictRequestOptions opts);
 }

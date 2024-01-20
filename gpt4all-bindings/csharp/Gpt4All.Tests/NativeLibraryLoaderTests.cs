@@ -9,7 +9,7 @@ public class NativeLibraryLoaderTests
     [Fact]
     public void NativeLibraryShouldLoad()
     {
-        var result = NativeLibraryLoader.LoadNativeLibrary(bypassLoading: false);
+        var result = NativeLibraryLoader.LoadNativeLibrary();
         Assert.True(result.IsSuccess);
     }
 

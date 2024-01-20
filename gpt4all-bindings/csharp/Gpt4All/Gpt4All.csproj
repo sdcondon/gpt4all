@@ -5,14 +5,18 @@
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+
+        <Version>0.0.0-local.$([System.DateTime]::Now.ToString(yyMMddTHHmm))</Version>
+        <PackageOutputPath>C:\Users\simon\Coding\Packages</PackageOutputPath>
     </PropertyGroup>
     <ItemGroup>
         <!-- Windows -->
-        <None Include="..\runtimes\win-x64\native\*.dll" Pack="true" PackagePath="runtimes\win-x64\native\%(Filename)%(Extension)" />
+        <None Include="..\runtimes\win-x64\native\*.dll" Pack="true" PackagePath="runtimes\win-x64\native\%(Filename)%(Extension)" Link="runtimes\win-x64\native\%(Filename)%(Extension)" />
         <!-- Linux -->
-        <None Include="..\runtimes\linux-x64\native\*.so" Pack="true" PackagePath="runtimes\linux-x64\native\%(Filename)%(Extension)" />
+        <None Include="..\runtimes\linux-x64\native\*.so" Pack="true" PackagePath="runtimes\linux-x64\native\%(Filename)%(Extension)" Link="runtimes\linux-x64\native\%(Filename)%(Extension)" />
         <!-- MacOS -->
-        <None Include="..\runtimes\osx\native\*.dylib" Pack="true" PackagePath="runtimes\osx\native\%(Filename)%(Extension)" />
+        <None Include="..\runtimes\osx\native\*.dylib" Pack="true" PackagePath="runtimes\osx\native\%(Filename)%(Extension)" Link="runtimes\osx\native\%(Filename)%(Extension)" />
         <Content Include="..\runtimes\osx\native\*.metal" Pack="true" PackagePath="contentFiles\any\any;content">
             <PackageCopyToOutput>true</PackageCopyToOutput>
         </Content>

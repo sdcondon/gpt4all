@@ -41,6 +41,7 @@ public unsafe partial struct llmodel_prompt_context
 
     public float context_erase;
 }
+
 #pragma warning disable CA2101
 internal static unsafe partial class NativeMethods
 {
@@ -105,5 +106,12 @@ internal static unsafe partial class NativeMethods
     [DllImport("libllmodel", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
     [return: NativeTypeName("int32_t")]
     public static extern int llmodel_threadCount([NativeTypeName("llmodel_model")] IntPtr model);
+
+    [DllImport("libllmodel", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+    public static extern void llmodel_set_implementation_search_path([NativeTypeName("const char *")][MarshalAs(UnmanagedType.LPUTF8Str)] string path);
+
+    [DllImport("libllmodel", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+    [return: NativeTypeName("const char *")]
+    public static extern IntPtr llmodel_get_implementation_search_path();
 }
 #pragma warning restore CA2101

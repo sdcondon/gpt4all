@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System.Threading.Tasks;
+using Xunit;
 
 namespace Gpt4All.Tests;
 
@@ -13,22 +14,22 @@ public class ModelFactoryTests
 
     [Fact]
     [Trait(Traits.SkipOnCI, "True")]
-    public void CanLoadLlamaModel()
+    public async Task CanLoadLlamaModel()
     {
-        using var model = _modelFactory.LoadModel(Constants.LLAMA_MODEL_PATH);
+        using var model = await _modelFactory.LoadModelAsync(Constants.LLAMA_MODEL_PATH, PredictRequestOptions.Defaults);
     }
 
     [Fact]
     [Trait(Traits.SkipOnCI, "True")]
-    public void CanLoadGptjModel()
+    public async Task CanLoadGptjModel()
     {
-        using var model = _modelFactory.LoadModel(Constants.GPTJ_MODEL_PATH);
+        using var model = await _modelFactory.LoadModelAsync(Constants.GPTJ_MODEL_PATH, PredictRequestOptions.Defaults);
     }
 
     [Fact]
     [Trait(Traits.SkipOnCI, "True")]
-    public void CanLoadMptModel()
+    public async Task CanLoadMptModel()
     {
-        using var model = _modelFactory.LoadModel(Constants.MPT_MODEL_PATH);
+        using var model = await _modelFactory.LoadModelAsync(Constants.MPT_MODEL_PATH, PredictRequestOptions.Defaults);
     }
 }

@@ -1,4 +1,4 @@
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace Gpt4All.LibraryLoader;
@@ -16,7 +16,7 @@ internal class WindowsLibraryLoader : ILibraryLoader
             return LoadResult.Failure(errorMessage);
         }
 
-        return LoadResult.Success;
+        return LoadResult.Success(fileName);
     }
 
     [DllImport("kernel32", SetLastError = true, CharSet = CharSet.Auto)]

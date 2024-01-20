@@ -5,13 +5,11 @@
 /// </summary>
 public interface ILLModel : IDisposable
 {
-    ulong GetStateSizeBytes();
+    ulong StateSizeBytes { get; }
 
-    int GetThreadCount();
+    int ThreadCount { get; set; }
 
-    void SetThreadCount(int threadCount);
-
-    bool IsLoaded();
+    bool IsLoaded { get; }
 
     bool Load(string modelPath);
 
